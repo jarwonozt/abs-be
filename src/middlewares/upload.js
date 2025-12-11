@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { compressSelfiePhoto, compressProfilePhoto } = require('../utils/imageCompressor');
 
 // Pastikan folder uploads dan subfolder ada
 const uploadDir = process.env.UPLOAD_PATH || './src/uploads';
@@ -129,9 +130,80 @@ const deleteFile = (filename, type = 'selfie') => {
   return false;
 };
 
+/**
+ * Middleware untuk kompresi foto selfie setelah upload
+ */
+const compressSelfie = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return next();
+    }
+
+    const filePath = req.file.path;
+    
+    // Kompresi foto
+    const compressionResult = await compressSelfiePhoto(filePath);
+    
+    // Update req.file dengan info file yang sudah dikompres
+    req.file.path = compressionResult.compressedPath;
+    req.file.filename = path.basename(compressionResult.compressedPath);
+    req.file.size = compressionResult.compressedSize;
+    
+    // Simpan info kompresi untuk logging
+    req.compressionInfo = {
+      originalSize: compressionResult.originalSize,
+      compressedSize: compressionResult.compressedSize,
+      reduction: compressionResult.reduction
+    };
+
+    next();
+  } catch (error) {
+    console.error('Error compressing selfie:', error);
+    // Jika kompresi gagal, lanjutkan dengan file original
+    next();
+  }
+};
+
+/**
+ * Middleware untuk kompresi foto profil setelah upload
+ */
+const compressProfile = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return next();
+    }
+
+    const filePath = req.file.path;
+    
+    // Kompresi foto
+    const compressionResult = await compressProfilePhoto(filePath);
+    
+    // Update req.file dengan info file yang sudah dikompres
+    req.file.path = compressionResult.compressedPath;
+    req.file.filename = path.basename(compressionResult.compressedPath);
+    req.file.size = compressionResult.compressedSize;
+    
+    // Simpan info kompresi untuk logging
+    req.compressionInfo = {
+      originalSize: compressionResult.originalSize,
+      compressedSize: compressionResult.compressedSize,
+      reduction: compressionResult.reduction
+    };
+
+    next();
+  } catch (error) {
+    console.error('Error compressing profile photo:', error);
+    // Jika kompresi gagal, lanjutkan dengan file original
+    next();
+  }
+};
+
 module.exports = {
   uploadSelfiePhoto,
   uploadProfilePhoto,
   handleUploadError,
-  deleteFile
+  deleteFile,
+  compressSelfie,
+  compressProfile
 };
+

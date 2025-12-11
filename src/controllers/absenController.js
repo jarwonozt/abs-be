@@ -103,6 +103,11 @@ exports.checkIn = async (req, res) => {
     
     const attendance = result.rows[0];
     
+    // Log compression info jika ada
+    if (req.compressionInfo) {
+      console.log(`📸 Photo compressed: ${req.compressionInfo.originalSize} → ${req.compressionInfo.compressedSize} bytes (${req.compressionInfo.reduction}% reduction)`);
+    }
+    
     return successResponse(res, {
       id: attendance.id,
       checkInTime: attendance.check_in_time,
@@ -235,6 +240,11 @@ exports.checkOut = async (req, res) => {
     );
     
     const updatedAttendance = result.rows[0];
+    
+    // Log compression info jika ada
+    if (req.compressionInfo) {
+      console.log(`📸 Photo compressed: ${req.compressionInfo.originalSize} → ${req.compressionInfo.compressedSize} bytes (${req.compressionInfo.reduction}% reduction)`);
+    }
     
     return successResponse(res, {
       id: updatedAttendance.id,

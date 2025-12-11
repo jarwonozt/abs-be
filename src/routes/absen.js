@@ -10,7 +10,7 @@ const {
 } = require('../controllers/absenController');
 
 const { verifyToken, verifyRole } = require('../middlewares/auth');
-const { uploadSelfiePhoto, handleUploadError } = require('../middlewares/upload');
+const { uploadSelfiePhoto, handleUploadError, compressSelfie } = require('../middlewares/upload');
 const { validateAbsenInput } = require('../middlewares/validator');
 
 /**
@@ -96,6 +96,7 @@ router.post(
   verifyToken,
   uploadSelfiePhoto,
   handleUploadError,
+  compressSelfie,
   validateAbsenInput,
   checkIn
 );
@@ -150,6 +151,7 @@ router.post(
   verifyToken,
   uploadSelfiePhoto,
   handleUploadError,
+  compressSelfie,
   validateAbsenInput,
   checkOut
 );

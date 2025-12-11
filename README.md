@@ -385,6 +385,12 @@ Content-Type: application/json
 - ✅ Validasi tipe file (JPEG, PNG, WEBP)
 - ✅ Limit ukuran file (5MB)
 - ✅ Simpan ke folder lokal
+- ✅ **Kompresi otomatis dengan Sharp**
+  - Selfie absensi: max 800x800px, quality 75%
+  - Foto profil: max 512x512px, quality 80%
+  - Auto-convert ke JPEG untuk efisiensi
+  - Maintain aspect ratio
+  - Logging compression ratio
 
 ## 🔧 Konfigurasi Lanjutan
 
@@ -432,6 +438,7 @@ Edit `src/middlewares/upload.js` untuk menggunakan S3.
 - [x] Integrasi controller dengan database PostgreSQL
 - [x] Master data absensi (office & shift settings)
 - [x] Swagger/OpenAPI documentation
+- [x] Kompresi foto otomatis
 - [ ] Implementasi Sequelize ORM (optional)
 - [ ] Upload foto ke AWS S3
 - [ ] Kompresi foto otomatis

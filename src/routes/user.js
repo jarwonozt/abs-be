@@ -14,7 +14,7 @@ const {
 } = require('../controllers/userController');
 
 const { verifyToken, verifyRole } = require('../middlewares/auth');
-const { uploadProfilePhoto: uploadPhoto, handleUploadError } = require('../middlewares/upload');
+const { uploadProfilePhoto: uploadPhoto, handleUploadError, compressProfile } = require('../middlewares/upload');
 const { validateUserInput } = require('../middlewares/validator');
 
 /**
@@ -362,6 +362,7 @@ router.post(
   verifyToken,
   uploadPhoto,
   handleUploadError,
+  compressProfile,
   uploadProfilePhoto
 );
 

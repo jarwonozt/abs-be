@@ -287,6 +287,11 @@ exports.uploadProfilePhoto = async (req, res) => {
     
     const photoFilename = photo.filename;
     
+    // Log compression info jika ada
+    if (req.compressionInfo) {
+      console.log(`📸 Profile photo compressed: ${req.compressionInfo.originalSize} → ${req.compressionInfo.compressedSize} bytes (${req.compressionInfo.reduction}% reduction)`);
+    }
+    
     const result = await db.query(
       'UPDATE users SET photo = $1, updated_at = NOW() WHERE id = $2 RETURNING id, name, photo',
       [photoFilename, id]
