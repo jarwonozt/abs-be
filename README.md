@@ -216,6 +216,13 @@ Swagger UI akan menampilkan semua endpoint API dengan dokumentasi lengkap, conto
 | PUT | `/api/users/:id/reset-password` | Reset password | Admin |
 | POST | `/api/users/:id/photo` | Upload foto profil | Private |
 
+### Master Data Absensi (NEW!)
+
+| Method | Endpoint | Deskripsi | Access |
+|--------|----------|-----------|--------|
+| PUT | `/api/users/:id/office-settings` | Update lokasi kantor (lat, lon, radius) | Admin |
+| PUT | `/api/users/:id/shift-settings` | Update jam kerja (shift_start, shift_end) | Admin |
+
 ## 🔐 Testing dengan Postman/Thunder Client
 
 ### 1. Login
@@ -315,6 +322,33 @@ accuracy: 25
 photo: [file]
 ```
 
+### 6. Update Office Settings (Admin Only)
+
+```http
+PUT http://localhost:3001/api/users/1/office-settings
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+
+{
+  "office_lat": -6.200000,
+  "office_lon": 106.816666,
+  "office_radius": 100
+}
+```
+
+### 7. Update Shift Settings (Admin Only)
+
+```http
+PUT http://localhost:3001/api/users/1/shift-settings
+Authorization: Bearer <accessToken>
+Content-Type: application/json
+
+{
+  "shift_start": "08:00",
+  "shift_end": "17:00"
+}
+```
+
 ## ✨ Fitur
 
 ### ✅ Authentication & Security
@@ -329,11 +363,13 @@ photo: [file]
 - ✅ Upload foto profil
 - ✅ Tetapkan lokasi kantor per user
 - ✅ Reset password
+- ✅ Filter & search users (by role, status, name/email)
 
 ### ✅ Master Data Absensi
-- ✅ Pengaturan lokasi kantor (lat, lon, radius)
-- ✅ Pengaturan jam kerja/shift
+- ✅ Pengaturan lokasi kantor (lat, lon, radius) - **Endpoint khusus**
+- ✅ Pengaturan jam kerja/shift (shift_start, shift_end) - **Endpoint khusus**
 - ✅ Anti-fake GPS (validasi accuracy)
+- ✅ Database terintegrasi dengan PostgreSQL
 
 ### ✅ Absensi (Core Feature)
 - ✅ Absen masuk dengan foto selfie
@@ -393,7 +429,9 @@ Edit `src/middlewares/upload.js` untuk menggunakan S3.
 - [x] Setup PostgreSQL database
 - [x] Buat schema database
 - [x] Koneksi database dengan pg
-- [ ] Integrasi controller dengan database PostgreSQL
+- [x] Integrasi controller dengan database PostgreSQL
+- [x] Master data absensi (office & shift settings)
+- [x] Swagger/OpenAPI documentation
 - [ ] Implementasi Sequelize ORM (optional)
 - [ ] Upload foto ke AWS S3
 - [ ] Kompresi foto otomatis

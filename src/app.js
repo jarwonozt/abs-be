@@ -154,6 +154,9 @@ app.listen(PORT, () => {
   console.log('   - DELETE /api/users/:id (Admin)');
   console.log('   - PUT    /api/users/:id/reset-password (Admin)');
   console.log('   - POST   /api/users/:id/photo');
+  console.log('\n   MASTER DATA ABSENSI:');
+  console.log('   - PUT    /api/users/:id/office-settings (Admin)');
+  console.log('   - PUT    /api/users/:id/shift-settings (Admin)');
   console.log('\n================================================\n');
 });
 
